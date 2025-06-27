@@ -6,25 +6,32 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable
 {
-    use HasApiTokens, Notifiable, SoftDeletes;
+    use HasApiTokens, Notifiable, SoftDeletes, HasRoles;
 
     protected $fillable = [
-        'username', 'email', 'password',
-        'first_name', 'last_name', 'role',
-        'permissions', 'status',
+        'username',
+        'email',
+        'password',
+        'first_name',
+        'last_name',
+        'role',     // just a label, not used for checks
+        'status',
     ];
 
-    protected $hidden = ['password', 'remember_token'];
+    protected $hidden = [
+        'password',
+        'remember_token',
+    ];
 
     protected $casts = [
-        'permissions'       => 'array',
         'email_verified_at' => 'datetime',
     ];
 
-    /* ────────────── Relationships ────────────── */
+    /* ─── Relationships ─── */
     public function activityLogs()
     {
         return $this->hasMany(ActivityLog::class);
