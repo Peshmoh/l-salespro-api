@@ -8,6 +8,7 @@ use App\Http\Controllers\API\DashboardController;
 use App\Http\Controllers\API\OrderController;
 use App\Http\Controllers\API\CustomerController;  
 use App\Http\Controllers\API\WarehouseController;
+use App\Http\Controllers\API\NotificationController;
 
 
 Route::prefix('v1')->group(function () {
@@ -69,5 +70,12 @@ Route::prefix('v1')->group(function () {
     Route::get('/warehouses/{id}/inventory', [WarehouseController::class, 'inventory']);
     Route::get('/stock-transfers', [WarehouseController::class, 'transferHistory']);
     Route::post('/stock-transfers', [WarehouseController::class, 'transferStock']);
+});
+Route::middleware('auth:sanctum')->prefix('notifications')->group(function () {
+    Route::get('/', [NotificationController::class, 'index']);
+    Route::put('{id}/read', [NotificationController::class, 'markAsRead']);
+    Route::put('read-all', [NotificationController::class, 'markAllAsRead']);
+    Route::delete('{id}', [NotificationController::class, 'destroy']);
+    Route::get('unread-count', [NotificationController::class, 'unreadCount']);
 });
 });
