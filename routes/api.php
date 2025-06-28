@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\AuthController;
 use App\Http\Controllers\API\ProductController;
+   use App\Http\Controllers\API\DashboardController;
 
 Route::prefix('v1')->group(function () {
 
@@ -35,4 +36,14 @@ Route::middleware(['auth:sanctum', 'permission:manage_inventory'])->group(functi
         Route::delete('products/{id}',   [ProductController::class,'destroy'])
              ->middleware('can:manage_inventory');
     });
+
+ 
+
+Route::middleware('auth:sanctum')->prefix('dashboard')->group(function () {
+    Route::get('summary',           [DashboardController::class, 'summary']);
+    Route::get('sales-performance', [DashboardController::class, 'salesPerformance']);
+    Route::get('inventory-status',  [DashboardController::class, 'inventoryStatus']);
+    Route::get('top-products',      [DashboardController::class, 'topProducts']);
+});
+
 });
