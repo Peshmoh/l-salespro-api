@@ -23,5 +23,12 @@ class Warehouse extends Model
     public function stockReservations()
     {
         return $this->hasMany(StockReservation::class);
+
     }
+    public function stockTransfersFrom() {
+    return $this->hasMany(StockTransfer::class, 'from_warehouse_id');
+}
+public function stockTransfersTo() {
+    return $this->hasMany(StockTransfer::class, 'to_warehouse_id');
+}
 }

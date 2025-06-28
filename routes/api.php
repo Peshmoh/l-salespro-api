@@ -6,7 +6,9 @@ use App\Http\Controllers\API\AuthController;
 use App\Http\Controllers\API\ProductController;
 use App\Http\Controllers\API\DashboardController;
 use App\Http\Controllers\API\OrderController;
-use App\Http\Controllers\API\CustomerController;   // ← NEW
+use App\Http\Controllers\API\CustomerController;  
+use App\Http\Controllers\API\WarehouseController;
+
 
 Route::prefix('v1')->group(function () {
 
@@ -61,4 +63,11 @@ Route::prefix('v1')->group(function () {
         Route::get('{id}/credit-status',     [CustomerController::class, 'creditStatus']);
         Route::get('map-data',               [CustomerController::class, 'mapData']);
     });
+
+    Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/warehouses', [WarehouseController::class, 'index']);
+    Route::get('/warehouses/{id}/inventory', [WarehouseController::class, 'inventory']);
+    Route::get('/stock-transfers', [WarehouseController::class, 'transferHistory']);
+    Route::post('/stock-transfers', [WarehouseController::class, 'transferStock']);
+});
 });
